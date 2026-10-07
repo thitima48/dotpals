@@ -17,9 +17,11 @@ npm install
 
 The Windows launcher opens **Tasks** at `http://127.0.0.1:5176/dashboard#tasks`.
 Install/authenticate the provider CLIs separately when you need worker dispatch.
-Each developer gets a private ignored `.dotpals-center/` profile. Configure your
-own team context and provider models; personal chat histories and credentials are
-not included in this repository.
+Each developer gets a private ignored `.dotpals-center/` profile. A starter team
+context with the `tester` role lives in [`team-context/`](team-context); point
+`.dotpals-center/claude-dispatch.json` at it (see the
+[development handoff](docs/development-handoff.md)). Personal chat histories and
+credentials are not included in this repository.
 
 Start with [development handoff](docs/development-handoff.md),
 [chat coordinator operations](docs/chat-coordinator.md),
