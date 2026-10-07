@@ -226,10 +226,12 @@ test('watchClaude follows sessions that have no hooks, and skips ones that do', 
   const text = lines.map((l) => JSON.stringify(l)).join('\n') + '\n';
   await writeFile(join(dir, 'C--work-proj', 'free.jsonl'), text);
   await writeFile(join(dir, 'C--work-proj', 'hooked.jsonl'), text);
+  await mkdir(join(dir, 'C--home-claude-mem-observer-sessions'));
+  await writeFile(join(dir, 'C--home-claude-mem-observer-sessions', 'observer.jsonl'), text);
 
   const log = createActivityLog();
   const states = [];
-  stop = watchClaude(log, { dir, interval: 50, emit: () => {}, state: (s, label, next) => states.push({ s, label, ...next }), skip: (s) => s === 'hooked' });
+  stop = watchClaude(log, { dir, interval: 50, emit: () => {}, state: (s, label, next) => states.push({ s, label, ...next }), skip: (s) => s === 'hooked', ignore: (name) => name.includes('observer-sessions') });
   await new Promise((r) => setTimeout(r, 300));
 
   const free = log.all().filter((e) => e.session === 'free');
@@ -237,6 +239,8 @@ test('watchClaude follows sessions that have no hooks, and skips ones that do', 
   assert.equal(free[1].status, 'ok');
   assert.equal(free[1].label, 'proj');
   assert.equal(log.all().filter((e) => e.session === 'hooked').length, 0);
+  assert.equal(log.all().filter((e) => e.session === 'observer').length, 0);
+  assert.ok(!states.some((s) => s.s === 'observer'));
   assert.equal(states.at(-1).s, 'free');
   assert.equal(states.at(-1).state, 'thinking');
 });

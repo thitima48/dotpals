@@ -1,6 +1,6 @@
 // Task mailbox UI. All user/agent content is text, never HTML.
 const node = (tag, cls, text) => { const el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; };
-const names = { raphael: 'ราฟาเอล', matthew: 'มัทธิว', thomas: 'โธมัส', philip: 'ฟิลิป', petros: 'เปโตร', andrew: 'อันดรูว์', nathaniel: 'นาธาเนียล', user: 'นายท่าน' };
+const names = { raphael: 'ราฟาเอล', matthew: 'มัทธิว', thomas: 'โธมัส', philip: 'ฟิลิป', petros: 'เปโตร', andrew: 'อันดรูว์', nathaniel: 'นาธาเนียล', tester: 'เทสเตอร์', user: 'นายท่าน' };
 const typeNames = { assignment: 'งาน', question: 'คำถาม', answer: 'คำตอบ', result: 'ผลการทำงาน', blocker: 'อุปสรรค', note: 'บันทึก' };
 const statusNames = { intake: 'รับงาน', requirements: 'ข้อกำหนด', design: 'ออกแบบ', 'contract-locked': 'ล็อกข้อกำหนด', development: 'พัฒนา', 'ready-for-review': 'พร้อมส่งตรวจ', 'independent-qa': 'ตรวจ QA', uat: 'ตรวจรับ', release: 'เตรียมปล่อย', done: 'เสร็จ', 'changes-requested': 'รอแก้ไข', blocked: 'ติดอุปสรรค', 'paused-capacity': 'พักเพราะโควตา' };
 const input = (value = '', multi = false) => { const el = node(multi ? 'textarea' : 'input'); el.value = value; return el; };

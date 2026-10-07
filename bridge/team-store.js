@@ -6,7 +6,7 @@ import { home } from './config.js';
 import { isSessionId, sessionKey } from './session-links.js';
 
 export const TASK_STATUSES = ['intake', 'requirements', 'design', 'contract-locked', 'development', 'ready-for-review', 'independent-qa', 'uat', 'release', 'done', 'changes-requested', 'blocked', 'paused-capacity'];
-export const TEAM_ROLES = ['raphael', 'matthew', 'thomas', 'philip', 'petros', 'andrew', 'nathaniel'];
+export const TEAM_ROLES = ['raphael', 'matthew', 'thomas', 'philip', 'petros', 'andrew', 'nathaniel', 'tester'];
 export const MESSAGE_TYPES = ['assignment', 'question', 'answer', 'result', 'blocker', 'note'];
 const PROVIDERS = ['codex', 'claude', 'gemini', 'antigravity'];
 const copy = (value) => structuredClone(value);

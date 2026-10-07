@@ -13,13 +13,14 @@ if (-not (Test-Path -LiteralPath $centerElectron)) {
 }
 New-Item -ItemType Directory -Path $centerDesktop -Force | Out-Null
 $centerEnvironment = @{}
-foreach ($centerName in @('DOTPALS_HOME', 'DOTPALS_PORT', 'DOTPALS_USER_DATA', 'ELECTRON_RUN_AS_NODE')) {
+foreach ($centerName in @('DOTPALS_HOME', 'DOTPALS_PORT', 'DOTPALS_USER_DATA', 'DOTPALS_CLAUDE_IGNORE', 'ELECTRON_RUN_AS_NODE')) {
   $centerEnvironment[$centerName] = [Environment]::GetEnvironmentVariable($centerName, 'Process')
 }
 try {
   $env:DOTPALS_HOME = $centerProfile
   $env:DOTPALS_PORT = '5176'
   $env:DOTPALS_USER_DATA = $centerDesktop
+  if (-not $env:DOTPALS_CLAUDE_IGNORE) { $env:DOTPALS_CLAUDE_IGNORE = 'observer-sessions' }
   Remove-Item Env:ELECTRON_RUN_AS_NODE -ErrorAction SilentlyContinue
   $centerMain = Join-Path $centerRoot 'desktop\main.js'
   $centerProcess = Start-Process -FilePath $centerElectron -ArgumentList @(('"' + $centerMain + '"'), '--dashboard', '--tasks') -WorkingDirectory $centerRoot -PassThru

@@ -435,7 +435,13 @@ export function startBridge({ port = Number(process.env.DOTPALS_PORT || process.
   }
 
   // -- Claude Code (hooks) ------------------------------------------------------
+  // DOTPALS_CLAUDE_IGNORE=observer-sessions,scratch hides sessions whose project
+  // folder or cwd contains any of the words (e.g. claude-mem's observer sessions).
+  const ignoredClaude = (process.env.DOTPALS_CLAUDE_IGNORE ?? '').split(',').map((w) => w.trim()).filter(Boolean);
+  const ignoreClaude = (text) => ignoredClaude.some((w) => String(text ?? '').includes(w));
+
   async function claudeEvent(event) {
+    if (ignoreClaude(event.cwd)) return null;
     const session = String(event.session_id);
     const label = folderName(event.cwd);
     hooked.add(session);
@@ -520,6 +526,7 @@ export function startBridge({ port = Number(process.env.DOTPALS_PORT || process.
       context: (session, label, ctx) => setContext(session, 'claude', label, ctx),
       sizeOf: claudeContextSize,
       skip: (session) => hooked.has(session),
+      ignore: ignoreClaude,
       cwd: (session, cwd, transcript) => noteSession(session, cwd, undefined, transcript),
       title: (session, title) => noteSession(session, undefined, undefined, undefined, undefined, title),
     });

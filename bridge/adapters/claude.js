@@ -283,7 +283,7 @@ export function contextOf(o, sizeOf = () => null) {
   return { used, size, known: !!told || used > 200_000, at: Date.parse(o.timestamp) || Date.now() };
 }
 
-export function watchClaude(log, { emit, state, context = () => {}, cwd = () => {}, title = () => {}, sizeOf, skip = () => false, dir = join(homedir(), '.claude', 'projects'), interval = 1500 } = {}) {
+export function watchClaude(log, { emit, state, context = () => {}, cwd = () => {}, title = () => {}, sizeOf, skip = () => false, ignore = () => false, dir = join(homedir(), '.claude', 'projects'), interval = 1500 } = {}) {
   const files = new Map(); // path → { offset, partial, reader, context }
   let stopped = false;
 
@@ -293,7 +293,7 @@ export function watchClaude(log, { emit, state, context = () => {}, cwd = () => 
     let projects = [];
     try { projects = await readdir(dir, { withFileTypes: true }); } catch { return found; }
     for (const p of projects) {
-      if (!p.isDirectory()) continue;
+      if (!p.isDirectory() || ignore(p.name)) continue;
       let names = [];
       try { names = await readdir(join(dir, p.name)); } catch { continue; }
       for (const name of names) {
